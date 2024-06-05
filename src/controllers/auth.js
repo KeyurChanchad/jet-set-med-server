@@ -97,11 +97,17 @@ exports.forgotPassword = async (req, res) => {
 
     await user.save();
 
-    const transporter = nodemailer.createTransport(emailService);
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "razgovor6367829@gmail.com",
+        pass: "knwdhnpcuvsrevir",
+      },
+    });
 
     const mailOptions = {
       to: user.email,
-      from: 'passwordreset@example.com',
+      from: "razgovor6367829@gmail.com",
       subject: 'Password Reset',
       text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
         Please click on the following link, or paste this into your browser to complete the process:\n\n
@@ -112,64 +118,122 @@ exports.forgotPassword = async (req, res) => {
     transporter.sendMail(mailOptions, (err) => {
       if (err) {
         console.error('Error sending email:', err);
-        return res.status(ResponseCodes.INTERNAL_SERVER_ERROR).send('Error sending email');
+        return res.status(ResponseCodes.INTERNAL_SERVER_ERROR).json({code: ResponseCodes.INTERNAL_SERVER_ERROR, success: false, message: 'Error sending email'});
       }
-      res.status(200).json({ msg: 'Recovery email sent' });
+      res.status(ResponseCodes.OK).json({ code: ResponseCodes.OK, success: true, message: 'Recovery email sent successfully' });
     });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(ResponseCodes.INTERNAL_SERVER_ERROR).json({ code: 
+      ResponseCodes.INTERNAL_SERVER_ERROR, success: false, message: 'Internal server error'});
   }
 };
 
 // Reset Password
-// exports.resetPassword = async (req, res) => {
-//   const { token, newPassword } = req.body;
+exports.resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
 
-//   try {
-//     const user = await User.findOne({
-//       resetPasswordToken: token,
-//       resetPasswordExpires: { $gt: Date.now() },
-//     });
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
 
-//     if (!user) {
-//       return res.status(400).json({ msg: 'Password reset token is invalid or has expired' });
-//     }
+    if (!user) {
+      return res.status(ResponseCodes.BAD_REQUEST).json({ code: ResponseCodes.BAD_REQUEST, success: false, message: "Password reset token is invalid or has expired" });
+    }
 
-//     const salt = await bcrypt.genSalt(10);
-//     user.password = await bcrypt.hash(newPassword, salt);
+    const encryptedPassword = encrypt(newPassword);
+    user.password = encryptedPassword;
 
-//     user.resetPasswordToken = undefined;
-//     user.resetPasswordExpires = undefined;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
 
-//     await user.save();
+    await user.save();
 
-//     res.status(200).json({ msg: 'Password has been reset' });
-//   } catch (err) {
-//     console.error(err.message);
-//     res.status(500).send('Server error');
-//   }
-// };
+    res.status(ResponseCodes.OK).json({ code: ResponseCodes.OK, success: true, message: "Password has been reset" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(ResponseCodes.INTERNAL_SERVER_ERROR).json({code: ResponseCodes.INTERNAL_SERVER_ERROR, success: false, message: 'Internal server error'});
+  }
+};
+
+// Send OTP through email
+exports.sendOTP = async (req, res) => {
+  const { userId, email } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(ResponseCodes.INTERNAL_SERVER_ERROR).json({ code: UserResponseCodes.USER_NOT_FOUND, success: false, message: 'User not found' });
+    }
+
+    let generatedOTP = "";
+    for (let index = 0; index < 6; index++) {
+      generatedOTP += Math.floor(Math.random() * 9);   
+    }
+    console.log('opt is ', generatedOTP)
+    // const transporter = nodemailer.createTransport({
+    //   service: "gmail",
+    //   auth: {
+    //     user: "razgovor6367829@gmail.com",
+    //     pass: "knwdhnpcuvsrevir",
+    //   },
+    // });
+
+    // const mailOptions = {
+    //   to: user.email,
+    //   from: "razgovor6367829@gmail.com",
+    //   subject: 'Password Reset',
+    //   text: `You are receiving this because you (or someone else) have requested to update your account's email address.\n\n
+    //     Please use the verification code below to update email:\n\n
+    //     ${generatedOTP}
+    //     If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+    // };
+
+    // transporter.sendMail(mailOptions, (err) => {
+    //   if (err) {
+    //     console.error('Error sending email:', err);
+    //     return res.status(ResponseCodes.INTERNAL_SERVER_ERROR).json({code: ResponseCodes.INTERNAL_SERVER_ERROR, success: false, message: 'Error sending email'});
+    //   }
+    //   res.status(ResponseCodes.OK).json({ code: ResponseCodes.OK, success: true, message: 'Recovery email sent successfully' });
+    // });
+
+    user.otp = String(generatedOTP);
+    await user.save();
+
+    res.status(ResponseCodes.OK).json({ code: ResponseCodes.OK, success: true, message: "OTP send successfully", opt: generatedOTP });
+  } catch (err) {
+    console.error(err.message);
+    res.status(ResponseCodes.INTERNAL_SERVER_ERROR).json({code: ResponseCodes.INTERNAL_SERVER_ERROR, success: false, message: 'Internal server error'});
+  }
+};
 
 // Update Email
-// exports.updateEmail = async (req, res) => {
-//   const { userId, newEmail, otp } = req.body;
+exports.updateEmail = async (req, res) => {
+  const { userId, newEmail, otp } = req.body;
 
-//   try {
-//     const user = await User.findById(userId);
+  try {
+    const user = await User.findById(userId);
 
-//     if (!user) {
-//       return res.status(400).json({ msg: 'User not found' });
-//     }
+    if (!user) {
+      return res.status(ResponseCodes.INTERNAL_SERVER_ERROR).json({ code: UserResponseCodes.USER_NOT_FOUND, success: false, message: 'User not found' });
+    }
 
-//     // Assume OTP verification step is completed here
+    // Assume OTP verification step is completed here
+    const isMatch = user.otp == otp;
+    if(!isMatch){
+      return res.status(ResponseCodes.BAD_REQUEST).json({ code: UserResponseCodes.USER_PASSWORD_MATCH_ERROR, success: false, message: 'Invalid OTP' });
+    }
 
-//     user.email = newEmail;
-//     await user.save();
+    user.email = newEmail;
+    user.otp = null;
+    await user.save();
 
-//     res.status(200).json({ msg: 'Email updated successfully' });
-//   } catch (err) {
-//     console.error(err.message);
-//     res.status(500).send('Server error');
-//   }
-// };
+    res.status(ResponseCodes.OK).json({ code: ResponseCodes.OK, success: true, message: "Email updated successfully" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(ResponseCodes.INTERNAL_SERVER_ERROR).json({code: ResponseCodes.INTERNAL_SERVER_ERROR, success: false, message: 'Internal server error'});
+  }
+};

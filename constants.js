@@ -26,13 +26,16 @@ const ResponseCodes = {
   };
 
   const emailService = {
-    host: 'your_email_smtp_host',
+    host: "smtp.ethereal.email",
     port: 587,
     secure: false,
     auth: {
-      user: 'your_email@example.com',
-      pass: 'your_email_password',
+      user: process.env.hostEmail,
+      pass: process.env.emailServicePassword,
     },
+    tls: {
+      servername: 'jet-set-med-server'
+    }
   }
 
 module.exports = { jwtSecret, mongoURL, encryptDecryptKey, ResponseCodes, UserResponseCodes, emailService }
