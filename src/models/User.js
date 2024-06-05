@@ -23,22 +23,33 @@ const userSchema = new mongoose.Schema({
         type: String,
         trim: true,
         lowercase: true,
-        default: ''
+        required: true,
+        unique: true,
     },
     phoneNumber: {
         type: String,
-        default: ''
+        trim: true,
+        required: true,
     },
     password: {
         type: String,
         required: true,
         trim: true,
-        lowercase: true
     },
     profilePhoto: {
         type: String,
         default: null
-    }
+    },
+    token: {
+        type: String,
+        default: null
+    },
+    resetPasswordToken: {
+        type: String,
+    },
+    resetPasswordExpires: {
+        type: Date,
+    },
 });
 
 module.exports = mongoose.model('User', userSchema);

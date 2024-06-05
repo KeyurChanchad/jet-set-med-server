@@ -1,29 +1,27 @@
 // server.js
 
 const express = require('express');
-const mongoose = require('mongoose');
+const connectDB = require('./config/db');
 const cors = require('cors');
-const { mongoURL } = require('./constants')
+
 const app = express();
-// Define port
+// Define Port
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(express.json());
+// Init  Middleware
+app.use(express.json({ extended: false }));
 app.use(cors());
 
-// MongoDB connection
-mongoose.connect(`${mongoURL}/jetSetMed`, { })
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error(err));
+// Connect Database
+connectDB();
 
 // Routes
 // Authentication endpoint
-// app.use('/api/auth', require('./src/routes/auth'));
+app.use('/api/v1/auth', require('./src/routes/auth'));
 // User endpoint
 app.use('/api/v1/user', require('./src/routes/user'));
 
-// Start server
+// Start Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

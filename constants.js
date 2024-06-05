@@ -1,6 +1,6 @@
-const secrek_key = 'JetSetMed@123';
+const jwtSecret = 'JetSetMed@123';
 
-const mongoURL = "mongodb://127.0.0.1:27017";
+const mongoURL = "mongodb://127.0.0.1:27017/jetSetMed";
 
 const encryptDecryptKey = "JetSetMed@123";
 
@@ -24,4 +24,15 @@ const ResponseCodes = {
     USER_DELETED_ERROR: 2010,
     PASSWORD_SHOULD_NOT_SAME: 2011,
   };
-module.exports = { secrek_key, mongoURL, encryptDecryptKey, ResponseCodes, UserResponseCodes }
+
+  const emailService = {
+    host: 'your_email_smtp_host',
+    port: 587,
+    secure: false,
+    auth: {
+      user: 'your_email@example.com',
+      pass: 'your_email_password',
+    },
+  }
+
+module.exports = { jwtSecret, mongoURL, encryptDecryptKey, ResponseCodes, UserResponseCodes, emailService }
