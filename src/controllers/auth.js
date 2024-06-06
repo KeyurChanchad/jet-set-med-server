@@ -201,6 +201,7 @@ exports.sendOTP = async (req, res) => {
     // });
 
     user.otp = String(generatedOTP);
+    user.otpExpires = Date.now() + 3600000; // 1 hour
     await user.save();
 
     res.status(ResponseCodes.OK).json({ code: ResponseCodes.OK, success: true, message: "OTP send successfully", opt: generatedOTP });
@@ -222,13 +223,13 @@ exports.updateEmail = async (req, res) => {
     }
 
     // Assume OTP verification step is completed here
-    const isMatch = user.otp == otp;
-    if(!isMatch){
+    if(user.otp !== otp || user.otpExpires < Date.now() ){
       return res.status(ResponseCodes.BAD_REQUEST).json({ code: UserResponseCodes.USER_PASSWORD_MATCH_ERROR, success: false, message: 'Invalid OTP' });
     }
 
     user.email = newEmail;
     user.otp = null;
+    user.otpExpires = null;
     await user.save();
 
     res.status(ResponseCodes.OK).json({ code: ResponseCodes.OK, success: true, message: "Email updated successfully" });
