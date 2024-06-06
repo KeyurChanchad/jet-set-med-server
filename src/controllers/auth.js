@@ -52,7 +52,7 @@ exports.login = async (req, res) => {
   console.log("login body ", req.body);
   try {
     const user = await User.findOne({ email });
-    console.log('user ', user.password);
+    console.log('user ', user);
     if (!user) {
       return res.status(ResponseCodes.BAD_REQUEST).json({ code: UserResponseCodes.USER_FETCH_FAILED, success: false, message: 'Invalid Credentials' });
     }
@@ -214,7 +214,6 @@ exports.sendOTP = async (req, res) => {
 // Update Email
 exports.updateEmail = async (req, res) => {
   const { userId, newEmail, otp } = req.body;
-
   try {
     const user = await User.findById(userId);
 
