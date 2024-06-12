@@ -1,8 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middlewares/authMiddleware');
-const { addUser } = require('../controllers/user');
+const { addUser, updateUser } = require('../controllers/user');
 
+// Add new user
 router.post('/', authMiddleware, addUser);
 
+// Edit user profile
+router.put('/', authMiddleware, updateUser);
+
+
+// soft delete by user and admin
 module.exports = router;

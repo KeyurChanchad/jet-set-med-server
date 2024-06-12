@@ -1,27 +1,27 @@
 const jwt = require('jsonwebtoken');
-const { secret_key, ResponseCodes } = require('../../constants');
+const { jwtSecret, ResponseCodes } = require('../../constants');
 const User = require('../models/User');
 
 // Middleware to verify authentication
 const verifyAuth = async (req, res, next) => {
-  let authToken = req.headers['authorization'];
+  let authToken = req.headers['authorization']?.replace("Bearer ", "");
   // Check if authToken exists
-  if (!authToken) {
+  if (!authToken) { 
     return res.status(ResponseCodes.UNAUTHORIZED).json({ code: ResponseCodes.UNAUTHORIZED, success: false, message: "Invalid token please login again" });
-  }
-  authToken = authToken.split('Bearer ')[1]
+    }
   console.log('REq header token ', authToken);
   try {
     // Verify the authentication token
-    const decodedToken = jwt.verify(authToken, secret_key);
-    if(decodedToken._id){
+    const decodedToken = jwt.verify(authToken, jwtSecret);
+    console.log('decoed toke ',  decodedToken);
+    if(decodedToken.user.id){
       // Extract _id from the decoded token and attach it to the request object
-      const user = await User.findById(decodedToken._id);
+      const user = await User.findById(decodedToken.user.id);
       if(!user){
         return res.status(ResponseCodes.UNAUTHORIZED).json({ code: ResponseCodes.UNAUTHORIZED, success: false, message: "Invalid token please login again" });
       }
-      req._id = decodedToken._id;
-      console.log('REQ userid ', decodedToken._id);
+      req.user_id = decodedToken.user.id;
+      console.log('REQ userid ', decodedToken.user.id);
       // Proceed to the next middleware or route handler
       next();
     }

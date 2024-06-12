@@ -57,7 +57,47 @@ const userSchema = new mongoose.Schema({
     otpExpires: {
         type: Date,
         default: null
+    },
+    isActive: {
+        type: Boolean,
+        default: true,
+    },
+    isQNACompleted: { // login not require
+        type: Boolean,
+        default: false,
+    },
+    isConsultant: { // first login then qna
+        type: Boolean,
+        default: false,
+    },
+    isSubscribe: { // first login, qna completed, isconsultant take
+        type: Boolean,
+        default: false,
+    },
+    previousAppointments: {
+        type: [ObjectID],
+    },
+    upcomingAppointments: {
+        type: [ObjectID],
+    },
+    type: {
+        type: String,
+        default: ''
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
     }
 });
+
+// Middleware to update the updatedAt field before each save
+// userSchema.pre('save', function(next) {
+//     this.updatedAt = Date.now();
+//     next();
+//   });
 
 module.exports = mongoose.model('User', userSchema);
