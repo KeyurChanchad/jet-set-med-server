@@ -24,6 +24,7 @@ app.use('/api/v1/user', require('./src/routes/user'));
 app.use('/api/v1/doctors', require('./src/routes/doctor'));
 // Service endpoint
 app.use('/api/v1/services', require('./src/routes/service'));
+app.use('/api/v1/appointments', require('./src/routes/appointment'));
 
 // Start Server
 app.listen(PORT, () => {
