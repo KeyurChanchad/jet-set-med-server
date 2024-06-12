@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middlewares/authMiddleware');
-const { addUser, updateUser } = require('../controllers/user');
-
-// Add new user
-router.post('/', authMiddleware, addUser);
+const { updateUser } = require('../controllers/user');
 
 // Edit user profile
 router.put('/', authMiddleware, updateUser);

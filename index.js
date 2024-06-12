@@ -20,6 +20,8 @@ connectDB();
 app.use('/api/v1/auth', require('./src/routes/auth'));
 // User endpoint
 app.use('/api/v1/user', require('./src/routes/user'));
+// Doctor endpoint
+app.use('/api/v1/doctors', require('./src/routes/doctor'));
 
 // Start Server
 app.listen(PORT, () => {

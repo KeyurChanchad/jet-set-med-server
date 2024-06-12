@@ -1,8 +1,8 @@
 // User model
 
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     firstName: {
         type: String,
         required: true,
@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         required: true,
         unique: true,
+        match: /.+\@.+\..+/,
     },
     phoneNumber: {
         type: String,
@@ -66,23 +67,30 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    isConsultant: { // first login then qna
+    isConsultantFinish: { // first login then qna
         type: Boolean,
         default: false,
     },
-    isSubscribe: { // first login, qna completed, isconsultant take
+    isSubscriptionTaken: { // first login, qna completed, isconsultant take
         type: Boolean,
         default: false,
     },
-    previousAppointments: {
-        type: [ObjectID],
-    },
-    upcomingAppointments: {
-        type: [ObjectID],
-    },
-    type: {
+    previousAppointments: [
+        {
+            type: Schema.Types.ObjectId, 
+            ref: 'Appointment'
+        }
+    ],
+    upcomingAppointments: [
+        {
+            type: Schema.Types.ObjectId, 
+            ref: 'Appointment'
+        }
+    ],
+    role: {
         type: String,
-        default: ''
+        enum: ['admin', 'user', 'consultant'],
+        required: true
     },
     createdAt: {
         type: Date,
@@ -95,9 +103,9 @@ const userSchema = new mongoose.Schema({
 });
 
 // Middleware to update the updatedAt field before each save
-// userSchema.pre('save', function(next) {
-//     this.updatedAt = Date.now();
-//     next();
-//   });
+userSchema.pre('save', function(next) {
+    this.updatedAt = Date.now();
+    next();
+  });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = model('User', userSchema);
