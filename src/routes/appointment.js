@@ -1,4 +1,4 @@
-//routes/service.js
+//routes/appointment.js
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middlewares/authMiddleware');
