@@ -13,7 +13,7 @@ const addDoctor = async (req, res) => {
         const doctor = new Doctor(data);
         await doctor.save();
         return res.status(ResponseCodes.CREATED).json({
-          code: UserResponseCodes.USER_SUCCESS,
+          code: ResponseCodes.CREATED,
           success: true,
           message: "Doctor added successfully",
           data: doctor,
@@ -48,10 +48,10 @@ const getAllDoctors = async (req, res) => {
       data: doctors,
     });
   } catch (error) {
-    return res.status(ResponseCodes.BAD_REQUEST).json({
-      code: ResponseCodes.BAD_REQUEST,
+    return res.status(ResponseCodes.INTERNAL_SERVER_ERROR).json({
+      code: ResponseCodes.INTERNAL_SERVER_ERROR,
       success: false,
-      message: "Something went wrong",
+      message: "Internal server error",
       error,
     });
   }
