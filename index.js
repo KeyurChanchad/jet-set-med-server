@@ -34,8 +34,7 @@ app.use('/api/v1/appointments', require('./src/routes/appointment'));
 app.use('/api/v1/payments', require('./src/routes/payment'));
 // Medical Report endpoint
 app.use('/api/v1/medicalReports', require('./src/routes/medicalReport'));
-// Upload endpoint
-app.use('/api/v1/uploads', require('./src/routes/upload'));
+
 
 // Start Server
 app.listen(PORT, () => {

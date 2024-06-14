@@ -53,7 +53,7 @@ exports.signup = async (req, res) => {
             id: user.id,
           },
         };
-        jwt.sign(payload, jwtSecret, { expiresIn: "1h" }, (err, token) => {
+        jwt.sign(payload, jwtSecret, { expiresIn: "1d" }, (err, token) => {
           if (err) throw err;
           res
             .status(ResponseCodes.CREATED)
@@ -122,7 +122,7 @@ exports.login = async (req, res) => {
       },
     };
 
-    jwt.sign(payload, jwtSecret, { expiresIn: "1h" }, (err, token) => {
+    jwt.sign(payload, jwtSecret, { expiresIn: "1d" }, (err, token) => {
       if (err) throw err;
       res
         .status(ResponseCodes.CREATED)

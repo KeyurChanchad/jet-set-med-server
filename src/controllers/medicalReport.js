@@ -9,14 +9,37 @@ const addMedicalReport = async (req, res) => {
   return addMedicalReportValidation(req.body)
     .then(async (data) => {
       try {
-        const medicalReport = new MedicalReport(data);
-        await medicalReport.save();
-        return res.status(ResponseCodes.CREATED).json({
-          code: ResponseCodes.CREATED,
-          success: true,
-          message: "MedicalReport added successfully",
-          data: medicalReport,
-        });
+        if (req.file == undefined) {
+          return res.status(ResponseCodes.BAD_REQUEST).json({
+            code: ResponseCodes.BAD_REQUEST,
+            success: false,
+            message: "No file selected.",
+          });
+        } else {
+          const newReport = new MedicalReport({
+            title: data.title,
+            description: data.description,
+            filePath: `/uploads/${req.file.filename}`,
+          });
+    
+          newReport
+            .save()
+            .then((report) =>
+              res.status(ResponseCodes.CREATED).json({
+                code: ResponseCodes.CREATED,
+                success: true,
+                message: "MedicalReport added successfully",
+                data: report,
+              })
+            )
+            .catch((err) =>
+              res.status(ResponseCodes.BAD_REQUEST).json({
+                code: ResponseCodes.BAD_REQUEST,
+                success: false,
+                message: "No file selected.",
+              })
+            );
+        }
       } catch (error) {
         return res.status(ResponseCodes.BAD_REQUEST).json({
           code: ResponseCodes.BAD_REQUEST,

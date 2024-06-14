@@ -5,8 +5,6 @@ const addMedicalReportValidation = (body)=> {
         const schema = Joi.object().keys({
             title: Joi.string().required(),
             description: Joi.string().required(),
-            filePath: Joi.string().required(),
-            description: Joi.string().required(),
         });
         const { error, value } = schema.validate(body);
         if (error) {
