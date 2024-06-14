@@ -8,7 +8,6 @@
 // Get and post public api
 
 // callBackRequestModel.js
-//get is public and other are private only admin can access
 
 const { Schema, model } = require("mongoose");
 

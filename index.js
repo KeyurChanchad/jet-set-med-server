@@ -34,6 +34,8 @@ app.use('/api/v1/appointments', require('./src/routes/appointment'));
 app.use('/api/v1/payments', require('./src/routes/payment'));
 // Medical Report endpoint
 app.use('/api/v1/medicalReports', require('./src/routes/medicalReport'));
+// CallBackRequest endpoint
+app.use('/api/v1/callBackRequests', require('./src/routes/callBackRequest'));
 
 
 // Start Server
