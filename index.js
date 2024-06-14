@@ -38,6 +38,10 @@ app.use('/api/v1/medicalReports', require('./src/routes/medicalReport'));
 app.use('/api/v1/callBackRequests', require('./src/routes/callBackRequest'));
 // QNA endpoint
 app.use('/api/v1/qnas', require('./src/routes/qna'));
+// Company endpoint
+app.use('/api/v1/company', require('./src/routes/company'));
+// RegisterStudent endpoint
+app.use('/api/v1/registerStudents', require('./src/routes/registerStudent'));
 
 
 // Start Server

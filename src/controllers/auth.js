@@ -22,6 +22,7 @@ exports.signup = async (req, res) => {
         phoneNumber,
         password,
         profilePhoto,
+        role
       } = data;
 
       try {
@@ -44,6 +45,7 @@ exports.signup = async (req, res) => {
           phoneNumber,
           password,
           profilePhoto,
+          role
         });
         const encryptedPassword = encrypt(password);
         user.password = encryptedPassword;

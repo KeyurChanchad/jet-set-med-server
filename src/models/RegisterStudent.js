@@ -6,11 +6,11 @@
 // ispaidby admin
 // company ref
 
-// RegisteredStudent model
+// RegisterStudent model
 
 const { Schema, model } = require("mongoose");
 
-const registeredStudentSchema = new Schema({
+const registerStudentSchema = new Schema({
    name : {
     type: String,
     require: true,
@@ -50,9 +50,9 @@ const registeredStudentSchema = new Schema({
 });
 
 // Middleware to update the updatedAt field before each save
-registeredStudentSchema.pre("save", function (next) {
+registerStudentSchema.pre("save", function (next) {
   this.updatedAt = Date.now();
   next();
 });
 
-module.exports = model("RegisteredStudent", registeredStudentSchema);
+module.exports = model("RegisterStudent", registerStudentSchema);

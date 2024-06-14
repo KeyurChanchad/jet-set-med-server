@@ -61,7 +61,7 @@ const companySchema = new Schema({
       befault: null,
     },
   ],
-  subscribedStudent: [
+  subscribedStudents: [
     {
       type: Schema.Types.ObjectId,
       ref: "RegisterStudent",

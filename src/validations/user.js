@@ -9,6 +9,7 @@ const addUserValidation = (body)=> {
             phoneNumber: Joi.string().regex(/^[0-9]{10}$/).messages({'error': `Phone number must have 10 digits.`}),
             password: Joi.string().pattern(new RegExp("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@#$%^&*])[A-Za-z0-9!@#$%^&*()-_+=]{8,}$")),
             profilePhoto: Joi.string().allow(""),
+            role: Joi.string().required()
         });
         const { error, value } = schema.validate(body);
         if (error) {
