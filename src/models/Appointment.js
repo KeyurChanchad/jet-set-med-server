@@ -30,6 +30,10 @@ const appointmentSchema = new Schema({
     enum: ['pending', 'confirmed', 'completed', 'cancelled'],
     default: 'pending'
   },
+  isActive: {
+    type: Boolean,
+    default: false
+  },
   notes: {
     type: String,
     trim: true

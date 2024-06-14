@@ -130,7 +130,7 @@ const updateDoctorById = async (req, res) => {
 // Delete a doctor by ID
 const deleteDoctorById = async (req, res) => {
   try {
-    const doctor = await Doctor.findByIdAndDelete(req.params.id);
+    const doctor = await Doctor.findByIdAndUpdate(req.params.id, { isActive: false });
 
     if (!doctor) {
       return res.status(ResponseCodes.NOT_FOUND).json({

@@ -129,7 +129,7 @@ const updateServiceById = async (req, res) => {
   // Delete a service by ID
 const deleteServiceById = async (req, res) => {
     try {
-      const service = await Service.findByIdAndDelete(req.params.id);
+      const service = await Service.findByIdAndUpdate(req.params.id, { isActive: false});
   
       if (!service) {
         return res.status(ResponseCodes.NOT_FOUND).json({

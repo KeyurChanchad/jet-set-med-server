@@ -126,7 +126,7 @@ const updateAppointmentById = async (req, res) => {
 // Delete an appointment by ID
 const deleteAppointmentById = async (req, res) => {
   try {
-    const appointment = await Appointment.findByIdAndDelete(req.params.id);
+    const appointment = await Appointment.findByIdAndUpdate(req.params.id, { isActive: false });
 
     if (!appointment) {
       return res.status(ResponseCodes.NOT_FOUND).json({
