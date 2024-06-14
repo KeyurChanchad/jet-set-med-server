@@ -36,6 +36,8 @@ app.use('/api/v1/payments', require('./src/routes/payment'));
 app.use('/api/v1/medicalReports', require('./src/routes/medicalReport'));
 // CallBackRequest endpoint
 app.use('/api/v1/callBackRequests', require('./src/routes/callBackRequest'));
+// QNA endpoint
+app.use('/api/v1/qnas', require('./src/routes/qna'));
 
 
 // Start Server
