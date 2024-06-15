@@ -101,7 +101,12 @@ const updateAppointmentById = async (req, res) => {
           });
         }
 
-        updates.forEach((update) => (appointment[update] = data[update]));
+        updates.forEach((update) => {
+          if(req.file){
+            appointment['reportFilePath'] = `/uploads/${req.file.filename}`;
+          }
+          else appointment[update] = data[update]
+        });
         await appointment.save();
         return res.status(ResponseCodes.OK).json({
           code: ResponseCodes.OK,

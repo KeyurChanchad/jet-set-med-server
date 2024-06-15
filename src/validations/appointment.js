@@ -20,10 +20,10 @@ const addAppointmentValidation = (body)=> {
 const updateAppointmentValidation = (body)=> {
     return new Promise((resolve, reject)=> {
         const schema = Joi.object().keys({
-            doctorId: Joi.string().required(),
-            appointmentDate: Joi.date().required(),
-            status: Joi.string().required(),
-            notes: Joi.string().allow("")
+            doctorId: Joi.string(),
+            appointmentDate: Joi.date(),
+            status: Joi.string(),
+            notes: Joi.string().allow(""),
         });
         const { error, value } = schema.validate(body);
         if (error) {

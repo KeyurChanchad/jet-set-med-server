@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { addMedicalReport, getAllMedicalReports, deleteMedicalReportById } = require('../controllers/medicalReport');
-const { upload } = require('../controllers/upload');
 const authMiddleware = require('../middlewares/authMiddleware');
+const { upload } = require('../services/upload');
 
 
 

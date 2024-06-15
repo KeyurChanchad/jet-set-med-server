@@ -1,5 +1,5 @@
 // appointmentModel.js
-// report upload by doctor
+// report upload by doctor -- pending
 // post - user
 // get id and get all user and admin
 // put doctor only
@@ -29,6 +29,10 @@ const appointmentSchema = new Schema({
     type: String,
     enum: ['pending', 'confirmed', 'completed', 'cancelled'],
     default: 'pending'
+  },
+  reportFilePath: {
+    type: String,
+    default: ''
   },
   isActive: {
     type: Boolean,

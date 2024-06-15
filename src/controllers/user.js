@@ -1,5 +1,6 @@
 const { ResponseCodes } = require("../../constants");
 const User = require("../models/User");
+const { encrypt } = require("../services/encrypt_decrypt");
 const { addUserValidation } = require("../validations/user");
 
 const updateUser = async (req, res) => {
@@ -17,7 +18,13 @@ const updateUser = async (req, res) => {
           });
         }
         console.log("data ", data);
-        updates.forEach((update) => (user[update] = data[update]));
+        updates.forEach((update) => {
+          if(update === 'password'){
+            const encryptedPassword = encrypt(data[update]);
+            user[update] = encryptedPassword;
+          }
+          else user[update] = data[update];
+        });
         await user.save();
         return res.status(ResponseCodes.OK).json({
           code: ResponseCodes.OK,

@@ -144,7 +144,6 @@ const deleteDoctorById = async (req, res) => {
       code: ResponseCodes.OK,
       success: true,
       message: "Doctor deleted successfully",
-      data: doctor,
     });
   } catch (error) {
     return res.status(ResponseCodes.BAD_REQUEST).json({

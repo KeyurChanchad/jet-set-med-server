@@ -34,7 +34,7 @@ exports.signup = async (req, res) => {
             .json({
               code: UserResponseCodes.USER_ALREADY_EXIST,
               success: false,
-              message: "User already exists",
+              message: "User already exists with this email address",
             });
         }
 
