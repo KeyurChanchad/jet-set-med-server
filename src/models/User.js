@@ -37,6 +37,10 @@ const userSchema = new Schema({
         required: true,
         trim: true,
     },
+    country: {
+        type: String,
+        required: true,
+    },
     profilePhoto: {
         type: String,
         default: null

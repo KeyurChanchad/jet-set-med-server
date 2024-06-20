@@ -13,6 +13,7 @@ const { addUserValidation } = require("../validations/user");
 
 // Signup
 exports.signup = async (req, res) => {
+  console.log("Request hit")
   return addUserValidation(req.body)
     .then(async (data) => {
       const {
@@ -22,9 +23,10 @@ exports.signup = async (req, res) => {
         phoneNumber,
         password,
         profilePhoto,
-        role
+        role,
+        country,
       } = data;
-
+      console.log("Data singup ", data)
       try {
         let user = await User.findOne({ email });
 
@@ -45,11 +47,13 @@ exports.signup = async (req, res) => {
           phoneNumber,
           password,
           profilePhoto,
-          role
+          role,
+          country
         });
         const encryptedPassword = encrypt(password);
         user.password = encryptedPassword;
         await user.save();
+        console.log("created new user ", user);
         const payload = {
           user: {
             id: user.id,
