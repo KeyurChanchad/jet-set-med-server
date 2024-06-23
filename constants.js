@@ -4,6 +4,8 @@ const mongoURL = "mongodb://127.0.0.1:27017/jetSetMed";
 
 const encryptDecryptKey = "JetSetMed@123";
 
+const appUrl = 'http://localhost:3000';
+
 const ResponseCodes = {
     OK: 200,
     CREATED: 201,
@@ -38,4 +40,4 @@ const ResponseCodes = {
     }
   }
 
-module.exports = { jwtSecret, mongoURL, encryptDecryptKey, ResponseCodes, UserResponseCodes, emailService }
+module.exports = { jwtSecret, mongoURL, encryptDecryptKey, ResponseCodes, UserResponseCodes, emailService, appUrl }
