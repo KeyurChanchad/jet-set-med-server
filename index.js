@@ -20,6 +20,8 @@ connectDB();
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
+//Check 
+app.get('/', (req, res) => res.send('Jet-Set-Med Server Running'));
 // Authentication endpoint
 app.use('/api/v1/auth', require('./src/routes/auth'));
 // User endpoint
